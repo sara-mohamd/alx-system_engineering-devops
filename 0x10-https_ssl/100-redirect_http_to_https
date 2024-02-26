@@ -1,0 +1,55 @@
+global
+    log     /dev/log local0
+    maxconn 2048
+    user    haproxy
+    group   haproxy
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option  redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+    option  forwardfor
+    option  http-server-close
+
+
+listen myserver
+        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.thepentest.tech.pem
+        redirect scheme https code 301 if !{ ssl_fc }
+        balance roundrobin
+        server server1 100.25.17.60:80 check
+        server server2 54.152.45.31:80 checkglobal
+    log     /dev/log local0
+    maxconn 2048
+    user    haproxy
+    group   haproxy
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option  redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+    option  forwardfor
+    option  http-server-close
+
+
+listen myserver
+        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.thepentest.tech.pem
+        redirect scheme https code 301 if !{ ssl_fc }
+        balance roundrobin
+        server server1 100.25.17.60:80 check
+        server server2 54.152.45.31:80 check
